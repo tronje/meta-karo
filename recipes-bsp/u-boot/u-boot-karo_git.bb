@@ -74,8 +74,8 @@ SRC_URI:append = "${@ "".join(map(lambda f: " file://cfg/%s.cfg" % f, d.getVar('
 
 UBOOT_FEATURES:append = "${@ " " + d.getVar('KARO_BASEBOARD') if d.getVar('KARO_BASEBOARD') in "qsbase1 qsbase4".split() else ""}"
 
-do_compile[depends] += "virtual/trusted-firmware-a:do_deploy"
-do_compile[depends] += "${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os:do_deploy', '', d)}"
+do_deploy[depends] += "virtual/trusted-firmware-a:do_deploy"
+do_deploy[depends] += "${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os:do_deploy', '', d)}"
 
 do_configure:prepend:stm32mp1() {
     if [ -z "${UBOOT_CONFIG}" ]; then
@@ -306,9 +306,9 @@ def get_tfa_configs(d):
     for type in d.getVar('UBOOT_CONFIG').split():
         tfa_cfg = d.getVarFlag('TF_A_CONFIG', type, True)
         if tfa_cfg == None:
-            bb.note("TF_A_CONFIG[%s] is not defined" % type)
+            bb.debug(2, "TF_A_CONFIG[%s] is not defined" % type)
             tfa_cfg = type
-        bb.warn("TF_A_CONFIG[%s]='%s'" % (type, tfa_cfg))
+        bb.debug(2, "TF_A_CONFIG[%s]='%s'" % (type, tfa_cfg))
         cfg += (tfa_cfg,)
     return " ".join(cfg)
 
