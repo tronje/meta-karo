@@ -142,11 +142,11 @@ Index: linux-qsmp-1570/drivers/gpu/drm/panel/panel-rpi-7inch.c
 +};
 +
 +static const struct drm_display_mode tc358762_mode = {
-+	.clock = 27000,
++	.clock = 27937,
 +	.hdisplay = 800,
-+	.hsync_start = 800 + 48,
-+	.hsync_end = 800 + 48 + 20,
-+	.htotal = 800 + 48 + 20 + 21,
++	.hsync_start = 800 + 68,
++	.hsync_end = 800 + 68 + 20,
++	.htotal = 800 + 68 + 20 + 26,
 +	.vdisplay = 480,
 +	.vsync_start = 480 + 7,
 +	.vsync_end = 480 + 7 + 2,
@@ -482,7 +482,7 @@ Index: linux-qsmp-1570/drivers/input/touchscreen/rpi_ft5406.c
 ===================================================================
 --- /dev/null
 +++ linux-qsmp-1570/drivers/input/touchscreen/rpi_ft5406.c
-@@ -0,0 +1,301 @@
+@@ -0,0 +1,302 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + *
@@ -763,6 +763,7 @@ Index: linux-qsmp-1570/drivers/input/touchscreen/rpi_ft5406.c
 +	cancel_work_sync(&ts_data->ft5406_work);
 +	if (ts_data->input_dev) {
 +		input_unregister_device(ts_data->input_dev);
++		input_free_device(ts_data->input_dev);
 +	}
 +	regulator_disable(ts_data->power_supply);
 +}

@@ -45,7 +45,7 @@ Index: u-boot-qsrz-g2l0/cmd/cm33.c
 --- /dev/null
 +++ u-boot-qsrz-g2l0/cmd/cm33.c
 @@ -0,0 +1,151 @@
-+// SPDX-License-Identifier: GPL-2.0+
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * (C) Copyright 2023 Uwe Steinkohl <us@karo-electronics.de>
 + * reworked by: Lothar Waßmann <LW@KARO-electronics.de>

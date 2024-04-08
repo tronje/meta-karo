@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-2.0+
+// SPDX-License-Identifier: GPL-2.0-or-later
 /*
  * Copyright (C) 2021 Renesas Electronics Corp.
  * Author: Biju Das <biju.das.jz@bp.renesas.com>

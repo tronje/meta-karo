@@ -483,7 +483,7 @@ index 000000000000..659b24f6071b
 --- /dev/null
 +++ b/drivers/gpu/drm/bridge/sn65dsi83/sn65dsi83_brg.h
 @@ -0,0 +1,63 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (C) 2020 Markus Bauer <mb@karo-electronics.de>
 + */
@@ -987,7 +987,7 @@ index 000000000000..228f0d0b4a7f
 --- /dev/null
 +++ b/drivers/gpu/drm/bridge/sn65dsi83/sn65dsi83_timing.h
 @@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (C) 2020 Markus Bauer <mb@karo-electronics.de>
 + */

@@ -787,7 +787,7 @@ index 000000000000..55754a6bdd91
 --- /dev/null
 +++ b/drivers/input/touchscreen/rpi_ft5406.h
 @@ -0,0 +1,71 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
 +#ifndef _RPI_FT5406_H_
 +#define _RPI_FT5406_H_
