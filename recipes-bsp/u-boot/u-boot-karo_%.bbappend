@@ -33,6 +33,7 @@ SRC_URI:append:stm32mp15 = " \
         file://dts/stm32mp153-karo.dtsi;subdir=git/arch/arm \
         file://dts/stm32mp153-qsmp.dtsi;subdir=git/arch/arm \
         file://dts/stm32mp153-txmp.dtsi;subdir=git/arch/arm \
+        file://dts/stm32mp153a-karo-scmi.dtsi;subdir=git/arch/arm \
         file://dts/stm32mp153a-qsmp-1530-u-boot.dtsi;subdir=git/arch/arm \
         file://dts/stm32mp153a-qsmp-1530.dts;subdir=git/arch/arm \
         file://dts/stm32mp153a-txmp-1530-u-boot.dtsi;subdir=git/arch/arm \
