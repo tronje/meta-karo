@@ -8,9 +8,8 @@ SRC_URI:append:stm32mp13 = " \
 
 SRC_URI:append:stm32mp15 = " \
 	file://fdts/stm32mp15-karo.dtsi;subdir=git \
-	file://fdts/stm32mp15-qsmp-mx.h;subdir=git \
+	file://fdts/stm32mp15-mx.h;subdir=git \
 	file://fdts/stm32mp15-qsmp.dtsi;subdir=git \
-	file://fdts/stm32mp15-txmp-mx.h;subdir=git \
 	file://fdts/stm32mp15-txmp.dtsi;subdir=git \
 	file://fdts/stm32mp151a-qsmp-1510.dts;subdir=git \
 	file://fdts/stm32mp151a-qsmp-1510-fw-config.dts;subdir=git \
@@ -57,5 +56,3 @@ TF_A_CONFIG_usb += 'LOG_LEVEL=40'
 TF_A_CONFIG_usb += 'STM32MP_USB_PROGRAMMER=1'
 TF_A_CONFIG_trusted += 'LOG_LEVEL=30'
 TF_A_CONFIG_optee += 'LOG_LEVEL=30'
-
-EXTRA_IMAGEDEPENDS += "virtual/trusted-firmware-a-serialboot"

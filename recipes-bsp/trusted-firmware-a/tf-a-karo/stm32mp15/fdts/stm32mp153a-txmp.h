@@ -9,7 +9,7 @@
  * DDR type: DDR3 / DDR3L
  * DDR width: 16bits
  * DDR density: 2Gb
- * System frequency: 533000Khz
+ * System frequency: 533000kHz
  * Relaxed Timing Mode: false
  * Address mapping type: RBC
  *
@@ -20,4 +20,4 @@
 #define DDR_MEM_SIZE	0x10000000
 #define DDR_ADDRMAP6	0x0F0F0606
 
-#include "stm32mp15-txmp-mx.h"
+#include "stm32mp15-mx.h"

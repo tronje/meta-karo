@@ -20,4 +20,4 @@
 #define DDR_MEM_SIZE	0x20000000
 #define DDR_ADDRMAP6	0x0F060606
 
-#include "stm32mp15-qsmp-mx.h"
+#include "stm32mp15-mx.h"
