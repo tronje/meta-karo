@@ -191,9 +191,9 @@
 			frac = <0x1a04>;
 		};
 
-		pll4_vco_594Mhz: pll4-vco-594Mhz {
+		pll4_vco_600Mhz: pll4-vco-600Mhz {
 			src = <CLK_PLL4_HSE>;
-			divmn = <3 98>;
+			divmn = <1 49>;
 		};
 	};
 
@@ -236,8 +236,8 @@
 		st,pll = <&pll4_cfg1>;
 
 		pll4_cfg1: pll4_cfg1 {
-			st,pll_vco = <&pll4_vco_594Mhz>;
-			st,pll_div_pqr = <5 7 7>;
+			st,pll_vco = <&pll4_vco_600Mhz>;
+			st,pll_div_pqr = <11 6 7>;
 		};
 	};
 
