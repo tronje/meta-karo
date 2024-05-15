@@ -346,6 +346,17 @@ do_deploy () {
     done
 }
 
+do_deploy:append:stm32mp1 () {
+    # create bash script to start 'fastboot' on the target via dfu-util
+    cat <<EOF > ${DEPLOYDIR}/fastboot.cmd
+fastboot 0
+EOF
+    for config in ${UBOOT_MACHINE};do
+        ${B}/${config}/tools/mkimage -C none -A arm -T script -d ${DEPLOYDIR}/fastboot.cmd ${DEPLOYDIR}/fastboot.img
+        break
+    done
+}
+
 do_deploy:rzg2l() {
     # Create fip.bin
     install -v -d "${DEPLOYDIR}/${FIPTOOL_DIR}"
