@@ -141,7 +141,11 @@
 	backlight_pwm_pins: backlight-pwm-pins {
 		pins {
 			pinmux = <STM32_PINMUX('A', 10, AF1)>; /* TIM1_CH3 */
-			bias-disable;
+			/*
+			 * pull PWM output HIGH when PWM is disabled;
+			 * change to 'bias-pull-down' when LCD backlight pin is active HIGH
+			 */
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <0>;
 		};
@@ -150,6 +154,11 @@
 	backlight_pwm_sleep_pins: backlight-pwm-sleep-pins {
 		pins {
 			pinmux = <STM32_PINMUX('A', 10, ANALOG)>; /* TIM1_CH3 */
+			/*
+			 * pull PWM output HIGH when PWM is disabled;
+			 * change to 'bias-pull-down' when LCD backlight pin is active HIGH
+			 */
+			bias-pull-up;
 		};
 	};
 };
