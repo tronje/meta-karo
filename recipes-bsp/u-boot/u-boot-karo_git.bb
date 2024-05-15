@@ -49,7 +49,7 @@ UBOOT_BOARD_DIR:stm32mp1 = "board/karo/stm32mp1"
 UBOOT_BOARD_DIR:rzg2 = "board/karo/txrz"
 
 UBOOT_LOCALVERSION = "${LOCALVERSION}"
-UBOOT_INITIAL_ENV = ""
+UBOOT_INITIAL_ENV = "${@ bb.utils.contains('IMAGE_INSTALL', 'u-boot-fw-utils', "u-boot-initial-env", "", d)}"
 UBOOT_DEVICE_TREE ?= "${@ "${DTB_BASENAME}-${KARO_BASEBOARD}" if "${KARO_BASEBOARD}" != "" else "${DTB_BASENAME}"}"
 
 UBOOT_ENV_FILE ?= "${@ "%s%s" % (d.getVar('MACHINE'), \
@@ -71,6 +71,8 @@ SRC_URI:append = " file://u-boot-cfg.${SOC_FAMILY}"
 SRC_URI:append = " file://u-boot-cfg.${MACHINE}"
 SRC_URI:append = "${@ "".join(map(lambda f: " file://u-boot-cfg.%s" % f, d.getVar('UBOOT_CONFIG').split()))}"
 SRC_URI:append = "${@ "".join(map(lambda f: " file://cfg/%s.cfg" % f, d.getVar('UBOOT_FEATURES').split()))}"
+
+SRC_URI:append = "${@ bb.utils.contains('IMAGE_INSTALL', 'u-boot-fw-utils', " file://fw_env.config", "", d)}"
 
 UBOOT_FEATURES:append = "${@ " " + d.getVar('KARO_BASEBOARD') if d.getVar('KARO_BASEBOARD') in "qsbase1 qsbase4".split() else ""}"
 
@@ -314,7 +316,17 @@ def get_tfa_configs(d):
 
 TF_A_CONFIGS = "${@ get_tfa_configs(d)}"
 
-do_install[noexec] = "1"
+do_install () {
+    if [ -n "${UBOOT_INITIAL_ENV}" ];then
+        for config in ${UBOOT_MACHINE};do
+            for type in ${UBOOT_CONFIG};do
+                install -D -m 644 ${B}/${config}/u-boot-initial-env-${type} ${D}/${sysconfdir}/${UBOOT_INITIAL_ENV}
+                break
+            done
+            break
+        done
+    fi
+}
 
 do_deploy () {
     # Create fip images
