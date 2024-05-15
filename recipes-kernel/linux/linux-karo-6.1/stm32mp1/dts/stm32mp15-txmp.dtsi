@@ -79,7 +79,6 @@
 	pinctrl-0 = <&txmp_sdmmc3_pins>;
 	pinctrl-1 = <&txmp_sdmmc3_opendrain_pins>;
 	pinctrl-2 = <&txmp_sdmmc3_sleep_pins>;
-	cd-gpios = <&gpioc 11 GPIO_ACTIVE_LOW>;
 	bus-width = <4>;
 	vmmc-supply = <&reg_3v3>;
 	no-1-8-v;

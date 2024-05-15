@@ -59,7 +59,6 @@
 	pinctrl-2 = <&qsmp_sdmmc1_sleep_pins>;
 	bus-width = <4>;
 	vmmc-supply = <&reg_3v3>;
-	cd-gpios = <&gpiob 7 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 	no-1-8-v;
 	st,neg-edge;
 	status = "disabled";

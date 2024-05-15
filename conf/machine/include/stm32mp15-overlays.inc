@@ -18,6 +18,7 @@ DTB_OVERLAYS_generic:append:stm32mp1 = " \
 DTB_OVERLAYS_generic:append:txmp = " \
         txmp-ft5x06 \
         txmp-sdcard \
+        txmp-sdcard-cd \
         txmp-lcd-panel \
         txmp-sound \
 "
@@ -32,6 +33,8 @@ DTB_OVERLAYS_generic:append:qsmp = " \
         qsmp-qsbase4 \
         qsmp-qsglyn1 \
         qsmp-raspi-display \
+        qsmp-sdcard \
+        qsmp-sdcard-cd \
         qsmp-smsc-phy \
         qsmp-sound \
 "
@@ -59,6 +62,7 @@ KARO_BASEBOARDS:qsmp-1510 ?= "\
 KARO_DTB_OVERLAYS[mb7] = " \
         ${@ mach_overlay(d, "karo-copro", dist="copro")} \
         txmp-sdcard \
+        txmp-sdcard-cd \
         txmp-lcd-panel \
         txmp-ft5x06 \
         txmp-sound \
@@ -70,6 +74,7 @@ KARO_DTB_OVERLAYS[qsbase1] = " \
         qsmp-qsbase1 \
         qsmp-ksz9031 \
         qsmp-lcd-panel \
+        qsmp-sdcard \
 "
 
 KARO_DTB_OVERLAYS[qsbase2] = " \
