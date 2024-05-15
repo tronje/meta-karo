@@ -34,10 +34,12 @@ SRC_URI:append:stm32mp1 = " \
 
 KERNEL_LOCALVERSION = "${LINUX_VERSION_EXTENSION}"
 KERNEL_IMAGETYPE:stm32mp1 = "uImage"
-# KERNEL_IMAGETYPE:stm32mp13 = "Image"
 
 KBUILD_DEFCONFIG = "defconfig"
 KBUILD_DEFCONFIG:qsmp-1510 = "qsmp-1510_defconfig"
+
+KERNEL_FEATURES:append:stm32mp13 = " stm32mp13.cfg"
+KERNEL_FEATURES:append:stm32mp15 = " stm32mp15.cfg"
 
 KERNEL_FEATURES:append = "${@bb.utils.contains('DISTRO_FEATURES',"bluetooth"," bluetooth.cfg","",d)}"
 KERNEL_FEATURES:append = "${@bb.utils.contains('DISTRO_FEATURES',"wifi"," wifi.cfg","",d)}"
