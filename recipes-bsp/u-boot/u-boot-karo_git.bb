@@ -26,15 +26,15 @@ SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 SRCBRANCH = "${@ d.getVar('UBOOT_BRANCH') if d.getVar('UBOOT_BRANCH') else \
             d.getVar('UBOOT_BRANCH_DEFAULT')}"
 SRCREV = "${@ d.getVar('UBOOT_REV') if d.getVar('UBOOT_REV') else \
-            d.getVar('UBOOT_REF_DEFAULT')}"
+            d.getVar('UBOOT_REV_DEFAULT')}"
 
-UBOOT_SRC ?= "git://github.com/karo-electronics/karo-tx-uboot.git;protocol=https;branch=${SRCBRANCH}"
+UBOOT_SRC ?= "git://github.com/karo-electronics/karo-tx-uboot.git;protocol=https"
 
-UBOOT_REF_DEFAULT:stm32mp1 = "d2bc87d5c6c069c6dcad44cbeb7a53d6688e5789"
 UBOOT_BRANCH_DEFAULT:stm32mp1 = "karo-stm32mp1-v2022.10"
+UBOOT_REV_DEFAULT:stm32mp1 = "33201673fbe502df252bbd2826ae2386d98a8677"
 
 UBOOT_BRANCH_DEFAULT:rzg2 = "karo-txrz"
-UBOOT_REF_DEFAULT:rzg2 = "66fed3c1ba38bf7229e10bfd9923b89bd7e98064"
+UBOOT_REV_DEFAULT:rzg2 = "66fed3c1ba38bf7229e10bfd9923b89bd7e98064"
 
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
