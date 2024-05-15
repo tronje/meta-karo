@@ -9,6 +9,8 @@
 	aliases {
 		i2c1 = &i2c2;
 		i2c2 = &i2c1;
+		mmc1 = &sdmmc1;
+		mmc2 = &sdmmc3;
 	};
 };
 
@@ -105,10 +107,6 @@
 	st,neg-edge;
 	non-removable;
 	status = "okay";
-};
-
-&sdmmc2 {
-	bus-width = <8>;
 };
 
 &spi4 {

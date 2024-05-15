@@ -14,8 +14,6 @@
 		ethernet0 = &ethernet0;
 		i2c0 = &i2c6;
 		mmc0 = &sdmmc2;
-		mmc1 = &sdmmc3;
-		mmc2 = &sdmmc1;
 		serial0 = &uart4;
 		serial1 = &usart2;
 		serial2 = &usart3;
