@@ -65,40 +65,63 @@ KERNEL_DEVICETREE:append:rzg2l = "${@ get_overlays(d, "renesas", "dtbo") }"
 KERNEL_DEVICETREE:append:stm32mp1 = "${@ get_overlays(d) }"
 
 do_check_config() {
-    applied=$(fgrep -f "${WORKDIR}/${KBUILD_DEFCONFIG}" ${B}/.config | wc -l)
-    configured=$(cat "${WORKDIR}/${KBUILD_DEFCONFIG}" | wc -l)
-    if [ $applied != $configured ];then
-        bbwarn "The following items of ${KBUILD_DEFCONFIG} have not been accepted by Kconfig"
-        bbwarn "$(fgrep -f "${WORKDIR}/${KBUILD_DEFCONFIG}" ${B}/.config | \
-                fgrep -vf - "${WORKDIR}/${KBUILD_DEFCONFIG}")"
-    fi
-    applied="$(fgrep -f "${WORKDIR}/${KBUILD_DEFCONFIG}" "${B}/defconfig" | wc -l)"
-    if [ $applied != $configured ];then
-        p="$(fgrep -f "${WORKDIR}/${KBUILD_DEFCONFIG}" "${B}/defconfig" | \
-                fgrep -vf - "${WORKDIR}/${KBUILD_DEFCONFIG}" | \
-                    sed 's/^# //;s/[= ].*$//')"
-        for pat in $p;do
-            bbwarn "'$(fgrep -w "$pat" "${WORKDIR}/${KBUILD_DEFCONFIG}")' is obsolete in '${KBUILD_DEFCONFIG}')'"
-        done
-    fi
-
-    for f in ${KERNEL_FEATURES};do
-        applied=$(fgrep -f ${WORKDIR}/cfg/$f ${B}/.config | wc -l)
-        configured=$(cat ${WORKDIR}/cfg/$f | wc -l)
-        if [ $applied != $configured ];then
-            bbwarn "The following items of config fragment $f have not been accepted by Kconfig:"
-            bbwarn "$(fgrep -f ${WORKDIR}/cfg/$f ${B}/.config | fgrep -vf - ${WORKDIR}/cfg/${f})"
-        fi
-        applied="$(fgrep -f "${WORKDIR}/cfg/${f}" "${B}/defconfig" | wc -l)"
-        if [ $applied != $configured ];then
-            p="$(fgrep -f "${WORKDIR}/cfg/${f}" "${B}/defconfig" | \
-                    fgrep -vf - "${WORKDIR}/cfg/${f}" | \
-                    sed 's/^# //;s/[= ].*$//')"
-            for pat in $p;do
-                bbwarn "'$(fgrep -w "$pat" "${WORKDIR}/cfg/${f}")' is obsolete in '$f')'"
+    ifs="$IFS"
+    IFS="
+"
+    applied=$(fgrep -f "${WORKDIR}/${KBUILD_DEFCONFIG}" "${B}/.config" | sort)
+    configured=$(cat "${WORKDIR}/${KBUILD_DEFCONFIG}" | sort)
+    if [ "$applied" != "$configured" ];then
+        bad=$(fgrep -f "${WORKDIR}/${KBUILD_DEFCONFIG}" ${B}/.config | \
+                fgrep -vf - "${WORKDIR}/${KBUILD_DEFCONFIG}" | sed 's/^# //;s/[= ].*$//')
+        for pat in $bad;do
+            override=false
+            for f in ${KERNEL_FEATURES};do
+                if fgrep -qw "$pat" "${WORKDIR}/cfg/${f}";then
+                    bbdebug 1 "'$(fgrep -w "$pat" "${WORKDIR}/${KBUILD_DEFCONFIG}")' from '${KBUILD_DEFCONFIG}' has been overridden by '${f}'"
+                    override=true
+                    break
+                fi
             done
+        done
+        if ! $override;then
+            bbwarn "'$(fgrep -w "$pat" "${WORKDIR}/${KBUILD_DEFCONFIG}")' from '${KBUILD_DEFCONFIG}' has not been accepted by Kconfig"
+        fi
+    fi
+    obsolete="$(fgrep -f "${WORKDIR}/${KBUILD_DEFCONFIG}" "${B}/defconfig" | \
+            fgrep -vf - "${WORKDIR}/${KBUILD_DEFCONFIG}")"
+    for pat in $obsolete;do
+        if fgrep -qw "$pat" "${B}/.config";then
+            bbwarn "'$(fgrep -w "$pat" "${WORKDIR}/${KBUILD_DEFCONFIG}")' is obsolete in '${KBUILD_DEFCONFIG}'"
         fi
     done
+
+    for f in ${KERNEL_FEATURES};do
+        bbdebug 1 "Checking '$f'"
+        applied=$(fgrep -f "${WORKDIR}/cfg/${f}" ${B}/.config | sort)
+        configured=$(cat "${WORKDIR}/cfg/${f}" | sort)
+        if [ "$applied" != "$configured" ];then
+            bad=$(fgrep -f "${WORKDIR}/cfg/${f}" ${B}/.config | \
+                    fgrep -vf - "${WORKDIR}/cfg/${f}" | sed 's/^# //;s/[= ].*$//')
+            for pat in $bad;do
+                bbwarn "'$(fgrep -w "$pat" "${WORKDIR}/cfg/${f}")' from '${f}' has not been accepted by Kconfig"
+            done
+        fi
+        obsolete="$(fgrep -f "${WORKDIR}/cfg/${f}" "${B}/defconfig" | \
+                fgrep -vf - "${WORKDIR}/cfg/${f}" | \
+                sed 's/^# //;s/[= ].*$//')"
+        for pat in $obsolete;do
+            cfg=$(fgrep -qw "$pat" "${B}/.config" | sort)
+            def=$(fgrep -qw "$pat" "${WORKDIR}/cfg/${f}" | sort)
+            if fgrep -qw "$pat" "${B}/.config";then
+                if fgrep -qw "$pat" "${WORKDIR}/defconfig";then
+                    bbdebug 1 "$(fgrep -w "$pat" "${WORKDIR}/cfg/${f}")' from '${f}' overrides '$(fgrep -w "$pat" "${WORKDIR}/defconfig")' from '${KBUILD_DEFCONFIG}'"
+                else
+                    bbwarn "$(fgrep -w "$pat" "${WORKDIR}/cfg/${f}")' is obsolete in '${f}'"
+                fi
+            fi
+        done
+    done
+    IFS="$ifs"
 }
 addtask do_check_config after do_savedefconfig
 do_check_config[nostamp] = "1"
@@ -115,11 +138,12 @@ do_configure:prepend() {
         echo "+g$head" > "${S}/.scmversion"
     fi
     install -v "${WORKDIR}/${KBUILD_DEFCONFIG}" "${B}/.config"
+
     sed -i '/CONFIG_LOCALVERSION/d' "${B}/.config"
     echo 'CONFIG_LOCALVERSION="${KERNEL_LOCALVERSION}"' >> "${B}/.config"
 
     for f in ${KERNEL_FEATURES};do
-        cat ${WORKDIR}/cfg/$f >> ${B}/.config
+        cat ${WORKDIR}/cfg/${f} >> ${B}/.config
     done
 }
 addtask do_configure before do_devshell
