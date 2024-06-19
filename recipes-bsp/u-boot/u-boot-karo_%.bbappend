@@ -58,3 +58,4 @@ SRC_URI:append = "${@ "" if 'mx6' in "${MACHINEOVERRIDES}".split(':') else "\
         file://dts/${DTB_BASENAME}.dts;subdir=git/arch/arm \
         file://dts/${DTB_BASENAME}-u-boot.dtsi;subdir=git/arch/arm \
 "}"
+

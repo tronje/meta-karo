@@ -51,10 +51,15 @@ UBOOT_BOARD_DIR:rzg2 = "board/karo/txrz"
 UBOOT_LOCALVERSION = "${LOCALVERSION}"
 UBOOT_INITIAL_ENV = "${@ bb.utils.contains('IMAGE_INSTALL', 'u-boot-fw-utils', "u-boot-initial-env", "", d)}"
 UBOOT_DEVICE_TREE ?= "${@ "${DTB_BASENAME}-${KARO_BASEBOARD}" if "${KARO_BASEBOARD}" != "" else "${DTB_BASENAME}"}"
+UBOOT_FEATURES:append = "${@bb.utils.contains('DISTRO_FEATURES', 'rauc', ' rauc', '', d)}"
 
-UBOOT_ENV_FILE ?= "${@ "%s%s" % (d.getVar('MACHINE'), \
+UBOOT_ENV_FILE ?= "${@ "%s%s%s" % (d.getVar('MACHINE'), \
                        "-" + d.getVar('KARO_BASEBOARD') \
-                       if d.getVar('KARO_BASEBOARD') != "" else "")}"
+                       if d.getVar('KARO_BASEBOARD') != "" else "", \
+                       "-" + "rauc" \
+                       if 'rauc' in d.getVar('DISTRO_FEATURES').split() else "")}"
+
+
 
 SRC_URI:append = "${@ " file://%s.env;subdir=git/%s" % \
                       (d.getVar('UBOOT_ENV_FILE'), d.getVar('UBOOT_BOARD_DIR')) \
